@@ -37,7 +37,7 @@ def main():
 
     # TODO: Train and evaluate the feature extraction model.
 
-    result = train_model(X_train, y_train, X_valid, y_valid, X_test, y_test, resuming=True, max_epochs=-1)
+    result = train_model(X_train, y_train, X_valid, y_valid, X_test, y_test, resuming=False, learning_rate = 0.001)
 
 
 def train_model(X_train, y_train, X_valid, y_valid, X_test, y_test,
