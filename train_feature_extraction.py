@@ -13,36 +13,40 @@ from sklearn.utils import shuffle
 sign_names = pd.read_csv('signnames.csv')
 nb_classes = 43
 
+
 def main():
+    if 0:
+        training_file = 'data/train.p'
+        validation_file = 'data/valid.p'
+        testing_file = 'data/test.p'
 
-    training_file = 'data/train.p'
-    validation_file = 'data/valid.p'
-    testing_file = 'data/test.p'
+        with open(training_file, mode='rb') as f:
+            train = pickle.load(f)
+        with open(validation_file, mode='rb') as f:
+            valid = pickle.load(f)
+        with open(testing_file, mode='rb') as f:
+            test = pickle.load(f)
 
-    with open(training_file, mode='rb') as f:
-        train = pickle.load(f)
-    with open(validation_file, mode='rb') as f:
-        valid = pickle.load(f)
-    with open(testing_file, mode='rb') as f:
-        test = pickle.load(f)
+        X_train, y_train = train['features'], train['labels']
+        X_valid, y_valid = valid['features'], valid['labels']
+        X_test, y_test = test['features'], test['labels']
 
-    X_train, y_train = train['features'], train['labels']
-    X_valid, y_valid = valid['features'], valid['labels']
-    X_test, y_test = test['features'], test['labels']
+        result = train_model(X_train, y_train, X_valid, y_valid, X_test, y_test, resuming=False, learning_rate=0.001)
+    else:
+        training_file = 'train.p'
 
-    # TODO: Define loss, training, accuracy operations.
-    # HINT: Look back at your traffic signs project solution, you may
-    # be able to reuse some the code.
+        with open(training_file, mode='rb') as f:
+            data = pickle.load(f)
 
+        X_train, X_val, y_train, y_val = train_test_split(data['features'], data['labels'], test_size=0.33,
+                                                          random_state=0)
 
-    # TODO: Train and evaluate the feature extraction model.
-
-    result = train_model(X_train, y_train, X_valid, y_valid, X_test, y_test, resuming=False, learning_rate = 0.001)
+        result = train_model(X_train, y_train, X_val, y_val, X_val, y_val, resuming=False, learning_rate=0.001)
 
 
 def train_model(X_train, y_train, X_valid, y_valid, X_test, y_test,
                 resuming=False,
-                learning_rate=0.001, max_epochs=1001, batch_size=256,
+                learning_rate=0.001, max_epochs=1001, batch_size=128,
                 early_stopping_enabled=True, early_stopping_patience=10,
                 log_epoch=1, print_epoch=1,
                 top_k=5, return_top_k=False,
@@ -331,6 +335,7 @@ def get_time_hhmmss(start=None):
     h, m = divmod(m, 60)
     time_str = "%02d:%02d:%02d" % (h, m, s)
     return time_str
+
 
 if __name__ == '__main__':
     main()
