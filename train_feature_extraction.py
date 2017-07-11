@@ -15,7 +15,7 @@ nb_classes = 43
 
 
 def main():
-    if 0:
+    if 1:
         training_file = 'data/train.p'
         validation_file = 'data/valid.p'
         testing_file = 'data/test.p'
@@ -33,7 +33,7 @@ def main():
 
         result = train_model(X_train, y_train, X_valid, y_valid, X_test, y_test, resuming=False, learning_rate=0.001)
     else:
-        training_file = 'train.p'
+        training_file = 'data/train.p'
 
         with open(training_file, mode='rb') as f:
             data = pickle.load(f)
